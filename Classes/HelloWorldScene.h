@@ -47,26 +47,57 @@ public:
     CREATE_FUNC(HelloWorld);
 
 private:
-    struct Porint {
+    // 以pos为中心顺时针旋转90度
+    void RotatePoint90(int pos);
+
+    // 以pos为中心逆时针旋转90度
+    void RotatePointNeg90(int pos);
+
+    // 旋转方块
+    void Rotate();
+
+    // 移动方块
+    void Move(int dx, int dy);
+
+    bool IsValidPosition();
+
+    void Drop(float dt);
+
+    void GetNewBlock();
+
+    void FixBlock();
+    
+    void ClearLines();
+
+    struct Point {
         cocos2d::Sprite* sprite;
         int x;
         int y;
     };
+
+    void SetPosition(Point& point);
+
     int _figures[kTypeSize][kBlockNum] = {
             1, 3, 5, 7, // I
-            4, 6, 8, 7, // J
-            3, 5, 7, 8, // L
-            5, 7, 6, 8, // O
-            3, 5, 6, 8, // S
-            3, 5, 7, 6, // T
-            4, 6, 5, 7  // Z
+            1, 2, 4, 6, // J
+            1, 2, 3, 5, // L
+            1, 2, 3, 4, // O
+            2, 3, 4, 5, // S
+            1, 3, 4, 5, // T
+            1, 3, 4, 6  // Z
     };
-    std::list<Porint> _points;
-    Porint _current_block[kBlockNum];
+    enum BlockType { I = 0, J, L, O, S, T, Z };
+    
+    std::list<Point> _points;
+    Point _current_block[kBlockNum];
+    Point _previous_block[kBlockNum];
+    BlockType _type;
+    std::mt19937 _random_engine;
     bool _is_left_pressed = false;
     bool _is_right_pressed = false;
     bool _is_up_pressed = false;
     bool _is_down_pressed = false;
+
 };
 
 #endif // __HELLOWORLD_SCENE_H__
